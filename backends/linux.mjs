@@ -1,4 +1,5 @@
 import { execFile } from 'node:child_process'
+import { existsSync } from 'node:fs'
 import { readFile, readlink } from 'node:fs/promises'
 
 const KEYS = {
@@ -30,6 +31,7 @@ export function createLinuxBackend(run = defaultRun) {
   const xdo = (...a) => run('xdotool', a)
 
   async function windows() {
+    if (!process.env.DISPLAY && !run.fake && existsSync('/tmp/.X11-unix/X99')) process.env.DISPLAY = ':99'
     if (!process.env.DISPLAY && !run.fake) throw new Error('DISPLAY ausente: requer sessão X11 (use Xvfb em servidor sem tela; Wayland não é suportado)')
     const ids = (await xdo('search', '--onlyvisible', '--name', '')).split('\n').filter(Boolean)
     const out = []
@@ -60,7 +62,15 @@ export function createLinuxBackend(run = defaultRun) {
   }
 
   async function focus(w, o) {
-    if (o.restoreWindow ?? true) await xdo('windowactivate', '--sync', String(w.id))
+    if (o.restoreWindow ?? true) {
+      try {
+        await xdo('windowactivate', '--sync', String(w.id))
+      } catch {
+        // sem gerenciador de janelas (ex.: Xvfb puro) não há _NET_ACTIVE_WINDOW; foca direto no X
+        await xdo('windowfocus', String(w.id))
+        return
+      }
+    }
     const active = (await xdo('getactivewindow')).trim()
     if (active !== String(w.id)) throw new Error('window_not_focused')
   }
