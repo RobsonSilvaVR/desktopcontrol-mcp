@@ -20,20 +20,20 @@ Para conferir o que falta: `npx -y desktopcontrol-mcp --doctor`.
 Com os requisitos cumpridos, cole este prompt no Claude Code (Windows ou Linux):
 ```
 Instale o MCP desktopcontrol-mcp (pacote npm `desktopcontrol-mcp`, https://github.com/RobsonSilvaVR/desktopcontrol-mcp).
-Registre-o com `claude mcp add desktopcontrol-mcp -- npx -y desktopcontrol-mcp` (no Windows, use `cmd /c npx -y desktopcontrol-mcp`). Se esta máquina não tiver tela, adicione `-e MCP_ENABLE_LAUNCH=1`.
+Registre-o com `claude mcp add desktopcontrol-mcp -- npx -y desktopcontrol-mcp@0.1.0` (no Windows, use `cmd /c npx -y desktopcontrol-mcp@0.1.0`). Se esta máquina não tiver tela, adicione `-e MCP_ENABLE_LAUNCH=1`.
 Depois confirme com `claude mcp list` e me diga se preciso reiniciar o Claude Code.
 ```
 Ou direto no terminal:
 ```
 # Linux / macOS
-claude mcp add desktopcontrol-mcp -- npx -y desktopcontrol-mcp
+claude mcp add desktopcontrol-mcp -- npx -y desktopcontrol-mcp@0.1.0
 # Windows
-claude mcp add desktopcontrol-mcp -- cmd /c npx -y desktopcontrol-mcp
+claude mcp add desktopcontrol-mcp -- cmd /c npx -y desktopcontrol-mcp@0.1.0
 ```
 Diagnóstico do que falta na máquina: `npx -y desktopcontrol-mcp --doctor`.
 
 ### Início mais rápido (clone)
-O `npx` verifica o registro a cada início (~12 s no Windows). Para iniciar na hora, instale a partir do código:
+Com a versão fixada (`@0.1.0`) o `npx` usa o cache e inicia em ~1,4 s; sem versão ele consulta o registro a cada início (~12 s no Windows). Para atualizar, troque o número da versão no registro. Para iniciar na hora (~0,1 s), instale a partir do código:
 ```
 git clone https://github.com/RobsonSilvaVR/desktopcontrol-mcp
 cd desktopcontrol-mcp && npm install
