@@ -20,5 +20,38 @@
   },
   "engines": {
     "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RobsonSilvaVR/desktopcontrol-mcp.git"
+  },
+  "homepage": "https://github.com/RobsonSilvaVR/desktopcontrol-mcp#readme",
+  "bugs": {
+    "url": "https://github.com/RobsonSilvaVR/desktopcontrol-mcp/issues"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "computer-use",
+    "desktop-automation",
+    "java",
+    "swing",
+    "windows",
+    "linux"
+  ],
+  "files": [
+    "server.mjs",
+    "doctor.mjs",
+    "launcher.mjs",
+    "backends",
+    "swing/swing-agent.jar",
+    "swing/src",
+    "swing/build.sh",
+    "vendor",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
   }
 }
