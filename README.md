@@ -17,7 +17,7 @@ Precisa de sessão X11 e dos pacotes `xdotool`, `xclip` e `maim` (ou ImageMagick
 ```
 sudo apt install xdotool xclip maim
 ```
-Sem tela (servidor): instale `xvfb` e habilite `MCP_ENABLE_LAUNCH=1`; a tool `launch_app` sobe um Xvfb e abre o programa nele. Wayland puro não é suportado.
+Sem tela (servidor): instale `xvfb` e `openbox` (um gerenciador de janelas é necessário para o Java receber teclado) e habilite `MCP_ENABLE_LAUNCH=1`; a tool `launch_app` sobe o Xvfb com o gerenciador e abre o programa nele. Wayland puro não é suportado.
 
 ## Tools
 Genéricas: `list_apps list_windows screenshot click type_text press_key hotkey paste_text scroll drag` (e `launch_app`, opt-in).
@@ -35,7 +35,7 @@ Swing: `swing_tree swing_click swing_set_text swing_focus swing_key swing_type s
 
 ## Como funciona
 - **Windows**: `vendor/orca/runtime.ps1` (UI Automation + Win32, do projeto [Orca](https://github.com/stablyai/orca), MIT) em modo `-Serve`, com patch para teclas F1–F12.
-- **Linux**: `xdotool` + `maim`/`import` + `xclip`. Testado apenas com testes unitários.
+- **Linux**: `xdotool` + `maim`/`import` + `xclip`. Validado em Ubuntu 24.04 (Xvfb + openbox) com apps Swing em Java 8 e 11.
 - **Swing**: `swing/swing-agent.jar` abre um socket local (127.0.0.1, token em `java.io.tmpdir/mcp-swing-<pid>.json`), lê a árvore de componentes e injeta eventos na EDT **sem depender de foco do SO nem de acessibilidade**. Sem foco, a tecla é entregue direto aos `KeyEventDispatcher` do app.
 
 ### Agente Swing

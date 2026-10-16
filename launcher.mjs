@@ -18,6 +18,19 @@ export async function ensureDisplay() {
   xvfb.unref()
   process.env.DISPLAY = ':99'
   await sleep(800)
+  // sem gerenciador de janelas o X não entrega foco/teclado a apps Java
+  for (const wm of ['openbox', 'fluxbox', 'matchbox-window-manager', 'icewm']) {
+    const child = spawn(wm, [], { detached: true, stdio: 'ignore', env: process.env })
+    const started = await new Promise((resolve) => {
+      child.once('spawn', () => resolve(true))
+      child.once('error', () => resolve(false))
+    })
+    if (started) {
+      child.unref()
+      await sleep(500)
+      break
+    }
+  }
 }
 
 export async function launchApp(command, args = []) {

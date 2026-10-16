@@ -22,7 +22,10 @@ if (win) {
   const missing = ['xdotool', 'xclip'].filter((c) => !has(c))
   if (!has('maim') && !has('import')) missing.push('maim')
   if (process.env.WAYLAND_DISPLAY && !process.env.DISPLAY) check('Sessão X11', false, 'Wayland puro não é suportado: use uma sessão X11 ou Xvfb')
-  if (!hasScreen) check('Tela (DISPLAY)', has('Xvfb'), 'sem tela: apt install xvfb (use a tool launch_app com MCP_ENABLE_LAUNCH=1)')
+  if (!hasScreen) {
+    const wm = ['openbox', 'fluxbox', 'matchbox-window-manager', 'icewm'].some(has)
+    check('Tela virtual (Xvfb + gerenciador de janelas)', has('Xvfb') && wm, 'sem tela: sudo apt install xvfb openbox (e use launch_app com MCP_ENABLE_LAUNCH=1)')
+  }
   check('xdotool, xclip e maim/imagemagick', missing.length === 0, `sudo apt install ${missing.join(' ')}`)
 }
 const javaHome = process.env.JAVA_HOME
