@@ -1,0 +1,24 @@
+{
+  "name": "desktopcontrol-mcp",
+  "version": "0.1.0",
+  "description": "MCP que controla janelas no Windows e Linux, com agente JVM para apps Java Swing",
+  "main": "server.mjs",
+  "scripts": {
+    "build": "sh swing/build.sh",
+    "test": "node --test test/*.test.mjs",
+    "doctor": "node doctor.mjs"
+  },
+  "author": "",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "zod": "^4.6.7"
+  },
+  "bin": {
+    "desktopcontrol-mcp": "server.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
