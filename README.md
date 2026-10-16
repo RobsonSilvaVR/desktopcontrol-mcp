@@ -12,6 +12,17 @@ Diagnóstico do que falta na máquina:
 npx -y github:RobsonSilvaVR/desktopcontrol-mcp --doctor
 ```
 
+### Instalar pedindo ao Claude
+Cole este prompt no Claude Code da máquina onde o MCP será usado:
+```
+Instale o MCP desktopcontrol-mcp nesta máquina, seguindo https://github.com/RobsonSilvaVR/desktopcontrol-mcp:
+1. Verifique se o Node 18+ está instalado; se não estiver, me avise antes de instalar.
+2. Rode `npx -y github:RobsonSilvaVR/desktopcontrol-mcp --doctor` e me mostre o resultado.
+3. Se faltarem pacotes do sistema (Linux), mostre o comando `sudo apt install ...` e peça minha confirmação antes de executá-lo. Se a máquina não tiver tela, inclua `xvfb openbox`.
+4. Registre o servidor: `claude mcp add desktopcontrol-mcp -- npx -y github:RobsonSilvaVR/desktopcontrol-mcp`. Em máquina sem tela, adicione `-e MCP_ENABLE_LAUNCH=1`.
+5. Rode o doctor de novo para confirmar que tudo está OK e me diga se preciso reiniciar o Claude Code para as tools `mcp__desktopcontrol-mcp__*` aparecerem.
+```
+
 ### Linux
 Precisa de sessão X11 e dos pacotes `xdotool`, `xclip` e `maim` (ou ImageMagick). O `--doctor` mostra o comando exato. Nada é instalado automaticamente.
 ```
