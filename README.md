@@ -2,33 +2,40 @@
 
 Servidor MCP (stdio) que controla janelas da máquina onde roda — **Windows** e **Linux (X11)** — com um **agente JVM** para aplicações Java Swing.
 
-## Instalação (um comando)
-Requer Node 18+.
-```
-claude mcp add desktopcontrol-mcp -- npx -y github:RobsonSilvaVR/desktopcontrol-mcp
-```
-Diagnóstico do que falta na máquina:
-```
-npx -y github:RobsonSilvaVR/desktopcontrol-mcp --doctor
-```
+## Requisitos
+Instale antes de pedir a instalação do MCP:
 
-### Instalar pedindo ao Claude
-Cole este prompt no Claude Code da máquina onde o MCP será usado:
-```
-Instale o MCP desktopcontrol-mcp nesta máquina, seguindo https://github.com/RobsonSilvaVR/desktopcontrol-mcp:
-1. Verifique se o Node 18+ está instalado; se não estiver, me avise antes de instalar.
-2. Rode `npx -y github:RobsonSilvaVR/desktopcontrol-mcp --doctor` e me mostre o resultado.
-3. Se faltarem pacotes do sistema (Linux), mostre o comando `sudo apt install ...` e peça minha confirmação antes de executá-lo. Se a máquina não tiver tela, inclua `xvfb openbox`.
-4. Registre o servidor: `claude mcp add desktopcontrol-mcp -- npx -y github:RobsonSilvaVR/desktopcontrol-mcp`. Em máquina sem tela, adicione `-e MCP_ENABLE_LAUNCH=1`.
-5. Rode o doctor de novo para confirmar que tudo está OK e me diga se preciso reiniciar o Claude Code para as tools `mcp__desktopcontrol-mcp__*` aparecerem.
-```
+| | Windows | Linux |
+|---|---|---|
+| Node.js | 18 ou superior | 18 ou superior |
+| Claude Code | instalado | instalado |
+| Sistema | Windows 10/11 com PowerShell 5.1 (já incluso) | sessão X11 (Wayland puro não é suportado) |
+| Pacotes | nenhum | `sudo apt install xdotool xclip maim` |
+| Sem tela (servidor) | — | `sudo apt install xvfb openbox` (o `openbox` é necessário para o Java receber teclado) |
+| Apps Java Swing (opcional) | JDK (não só JRE) | JDK (não só JRE) |
 
-### Linux
-Precisa de sessão X11 e dos pacotes `xdotool`, `xclip` e `maim` (ou ImageMagick). O `--doctor` mostra o comando exato. Nada é instalado automaticamente.
+Para conferir o que falta, depois de clonar: `node server.mjs --doctor`.
+
+## Instalação
+Com os requisitos cumpridos, cole este prompt no Claude Code (Windows ou Linux):
 ```
-sudo apt install xdotool xclip maim
+Instale o MCP desktopcontrol-mcp: https://github.com/RobsonSilvaVR/desktopcontrol-mcp
+Clone o repositório em uma pasta fixa (ex.: ~/mcp/desktopcontrol-mcp), rode `npm install` dentro dela e registre com `claude mcp add desktopcontrol-mcp -- node <caminho absoluto>/server.mjs`. Se esta máquina não tiver tela, adicione `-e MCP_ENABLE_LAUNCH=1`.
+Depois rode `node <caminho>/server.mjs --doctor` e `claude mcp list`, e me diga se preciso reiniciar o Claude Code.
 ```
-Sem tela (servidor): instale `xvfb` e `openbox` (um gerenciador de janelas é necessário para o Java receber teclado) e habilite `MCP_ENABLE_LAUNCH=1`; a tool `launch_app` sobe o Xvfb com o gerenciador e abre o programa nele. Wayland puro não é suportado.
+Manualmente:
+```
+git clone https://github.com/RobsonSilvaVR/desktopcontrol-mcp
+cd desktopcontrol-mcp && npm install
+node server.mjs --doctor
+claude mcp add desktopcontrol-mcp -- node "$(pwd)/server.mjs"
+```
+No Windows (PowerShell) troque a última linha por `claude mcp add desktopcontrol-mcp -- node "$PWD\server.mjs"`. Para atualizar: `git pull && npm install`.
+
+> Não use `npx github:...` no registro: ele refaz o download a cada início (~95 s no Windows) e o Claude Code desiste do servidor após 30 s.
+
+### Linux sem tela
+O `launch_app` (habilitado por `MCP_ENABLE_LAUNCH=1`) sobe um Xvfb com o `openbox` e abre o programa nele.
 
 ## Tools
 Genéricas: `list_apps list_windows screenshot click type_text press_key hotkey paste_text scroll drag` (e `launch_app`, opt-in).
