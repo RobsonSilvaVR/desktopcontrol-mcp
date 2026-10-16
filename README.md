@@ -14,25 +14,34 @@ Instale antes de pedir a instalação do MCP:
 | Sem tela (servidor) | — | `sudo apt install xvfb openbox` (o `openbox` é necessário para o Java receber teclado) |
 | Apps Java Swing (opcional) | JDK (não só JRE) | JDK (não só JRE) |
 
-Para conferir o que falta, depois de clonar: `node server.mjs --doctor`.
+Para conferir o que falta: `npx -y desktopcontrol-mcp --doctor`.
 
 ## Instalação
 Com os requisitos cumpridos, cole este prompt no Claude Code (Windows ou Linux):
 ```
-Instale o MCP desktopcontrol-mcp: https://github.com/RobsonSilvaVR/desktopcontrol-mcp
-Clone o repositório em uma pasta fixa (ex.: ~/mcp/desktopcontrol-mcp), rode `npm install` dentro dela e registre com `claude mcp add desktopcontrol-mcp -- node <caminho absoluto>/server.mjs`. Se esta máquina não tiver tela, adicione `-e MCP_ENABLE_LAUNCH=1`.
-Depois rode `node <caminho>/server.mjs --doctor` e `claude mcp list`, e me diga se preciso reiniciar o Claude Code.
+Instale o MCP desktopcontrol-mcp (pacote npm `desktopcontrol-mcp`, https://github.com/RobsonSilvaVR/desktopcontrol-mcp).
+Registre-o com `claude mcp add desktopcontrol-mcp -- npx -y desktopcontrol-mcp` (no Windows, use `cmd /c npx -y desktopcontrol-mcp`). Se esta máquina não tiver tela, adicione `-e MCP_ENABLE_LAUNCH=1`.
+Depois confirme com `claude mcp list` e me diga se preciso reiniciar o Claude Code.
 ```
-Manualmente:
+Ou direto no terminal:
+```
+# Linux / macOS
+claude mcp add desktopcontrol-mcp -- npx -y desktopcontrol-mcp
+# Windows
+claude mcp add desktopcontrol-mcp -- cmd /c npx -y desktopcontrol-mcp
+```
+Diagnóstico do que falta na máquina: `npx -y desktopcontrol-mcp --doctor`.
+
+### Início mais rápido (clone)
+O `npx` verifica o registro a cada início (~12 s no Windows). Para iniciar na hora, instale a partir do código:
 ```
 git clone https://github.com/RobsonSilvaVR/desktopcontrol-mcp
 cd desktopcontrol-mcp && npm install
-node server.mjs --doctor
 claude mcp add desktopcontrol-mcp -- node "$(pwd)/server.mjs"
 ```
-No Windows (PowerShell) troque a última linha por `claude mcp add desktopcontrol-mcp -- node "$PWD\server.mjs"`. Para atualizar: `git pull && npm install`.
+No Windows (PowerShell) use `node "$PWD\server.mjs"`. Para atualizar: `git pull && npm install`.
 
-> Não use `npx github:...` no registro: ele refaz o download a cada início (~95 s no Windows) e o Claude Code desiste do servidor após 30 s.
+> Não registre com `npx github:...`: ele refaz o download a cada início (~95 s no Windows) e o Claude Code desiste do servidor após 30 s.
 
 ### Linux sem tela
 O `launch_app` (habilitado por `MCP_ENABLE_LAUNCH=1`) sobe um Xvfb com o `openbox` e abre o programa nele.
